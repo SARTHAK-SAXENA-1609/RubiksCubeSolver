@@ -2,164 +2,290 @@
 // Created by Sarthak Saxena.
 //
 
-#ifndef RUBIKS_CUBE_SOLVER_RUBIKSCUBE_H
-#define RUBIKS_CUBE_SOLVER_RUBIKSCUBE_H
-
-#include "bits/stdc++.h"
+#include <bits/stdc++.h>
+#include "Models/RubiksCube3DArray.cpp"
+#include "Models/RubiksCube1DArray.cpp"
+// #include "Models/RubiksCubeBitboard.cpp"
+#include "Solver/DFSsolver.h"
+#include "Solver/BFSsolver.h"
+#include "Solver/IDDFSsolver.h"
+#include "Solver/IDAstarSolver.h"
+// #include "PatternDatabases/CornerPatternDatabase.h"
+#include "PatternDatabases/CornerDBMaker.h"
 
 using namespace std;
 
-class RubiksCube {
-public:
-    enum class FACE {
-        UP,
-        LEFT,
-        FRONT,
-        RIGHT,
-        BACK,
-        DOWN
-    };
 
-    enum class COLOR {
-        WHITE,
-        GREEN,
-        RED,
-        BLUE,
-        ORANGE,
-        YELLOW
-    };
+int main() {
+//     RubiksCube3DArray object3DArray;
+//     RubiksCube1DArray object1dArray;
+//     RubiksCubeBitboard objectBitboard;
+// //
+//     object3DArray.print();
+// //
+//     if (object3DArray.isSolved()) cout << "SOLVED\n\n";
+//     else cout << "NOT SOLVED\n\n";
+// //
+//     if (object1dArray.isSolved()) cout << "SOLVED\n\n";
+//     else cout << "NOT SOLVED\n\n";
+// //
+//     if (objectBitboard.isSolved()) cout << "SOLVED\n\n";
+//     else cout << "NOT SOLVED\n\n";
+// //
+//     objectBitboard.u();
+//     object3DArray.u();
+//     object1dArray.u();
+//     objectBitboard.print();
+//     object3DArray.print();
+//     object1dArray.print();
+//
+//    objectBitboard.l();
+//    object3DArray.l();
+//    object1dArray.l();
+//    objectBitboard.print();
+//    object3DArray.print();
+//    object1dArray.print();
+//
+//    objectBitboard.f();
+//    object3DArray.f();
+//    object1dArray.f();
+//    objectBitboard.print();
+//    object3DArray.print();
+//    object1dArray.print();
+//
+//    objectBitboard.r();
+//    object3DArray.r();
+//    object1dArray.r();
+//    objectBitboard.print();
+//    object3DArray.print();
+//    object1dArray.print();
+//
+//    objectBitboard.b();
+//    object3DArray.b();
+//    object1dArray.b();
+//    objectBitboard.print();
+//    object3DArray.print();
+//    object1dArray.print();
+//
+//    objectBitboard.d();
+//    object3DArray.d();
+//    object1dArray.d();
+//    objectBitboard.print();
+//    object3DArray.print();
+//    object1dArray.print();
+//
+//    if (object3DArray.isSolved()) cout << "SOLVED\n\n";
+//    else cout << "NOT SOLVED\n\n";
+//
+//    if (object1dArray.isSolved()) cout << "SOLVED\n\n";
+//    else cout << "NOT SOLVED\n\n";
+//
+//    if (objectBitboard.isSolved()) cout << "SOLVED\n\n";
+//    else cout << "NOT SOLVED\n\n";
+//
+//    objectBitboard.dPrime();
+//    object3DArray.dPrime();
+//    object1dArray.dPrime();
+//    objectBitboard.print();
+//    object3DArray.print();
+//    object1dArray.print();
+//
+//    objectBitboard.bPrime();
+//    object3DArray.bPrime();
+//    object1dArray.bPrime();
+//    objectBitboard.print();
+//    object3DArray.print();
+//    object1dArray.print();
+//
+//    objectBitboard.rPrime();
+//    object3DArray.rPrime();
+//    object1dArray.rPrime();
+//    objectBitboard.print();
+//    object3DArray.print();
+//    object1dArray.print();
+//
+//    objectBitboard.fPrime();
+//    object3DArray.fPrime();
+//    object1dArray.fPrime();
+//    objectBitboard.print();
+//    object3DArray.print();
+//    object1dArray.print();
+//
+//    objectBitboard.lPrime();
+//    object3DArray.lPrime();
+//    object1dArray.lPrime();
+//    objectBitboard.print();
+//    object3DArray.print();
+//    object1dArray.print();
+//
+//    objectBitboard.uPrime();
+//    object3DArray.uPrime();
+//    object1dArray.uPrime();
+//    objectBitboard.print();
+//    object3DArray.print();
+//    object1dArray.print();
+//
+//    if (object3DArray.isSolved()) cout << "SOLVED\n\n";
+//    else cout << "NOT SOLVED\n\n";
+//
+//    if (object1dArray.isSolved()) cout << "SOLVED\n\n";
+//    else cout << "NOT SOLVED\n\n";
+//
+//    if (objectBitboard.isSolved()) cout << "SOLVED\n\n";
+//    else cout << "NOT SOLVED\n\n";
 
-    enum class MOVE {
-        L, LPRIME, L2,
-        R, RPRIME, R2,
-        U, UPRIME, U2,
-        D, DPRIME, D2,
-        F, FPRIME, F2,
-        B, BPRIME, B2
-    };
+    // Create two Cubes ------------------------------------------------------------------------------------------
 
-    /*
-     * Returns the color of the cell at (row, col) in face.
-     * If Rubik's Cube face is pointing at you, then the row numbering starts from the
-     * top to bottom, and column numbering starts from the left to right.
-     * The rows and columns are 0-indexed.
-     */
-    virtual COLOR getColor(FACE face, unsigned row, unsigned col) const = 0;
+    // RubiksCube3DArray cube1;
+    // RubiksCube3DArray cube2;
 
-    /*
-     * Returns the first letter of the given COLOR
-     */
-    static char getColorLetter(COLOR color);
-
-    /*
-     * Returns true if the Rubik Cube is solved, otherwise returns false.
-     */
-    virtual bool isSolved() const = 0;
-
-    /*
-     * Returns the move in the string format.
-     */
-    static string getMove(MOVE ind);
-
-    /*
-     * Print the Rubik Cube in Planar format.
-     *
-     * The cube is laid out as follows.
-     *
-     * The sides:
-     *    U
-     *  L F R B
-     *    D
-     *
-     * Color wise:
-     *
-     *          W W W
-     *          W W W
-     *          W W W
-     *
-     *  G G G   R R R   B B B   O O O
-     *  G G G   R R R   B B B   O O O
-     *  G G G   R R R   B B B   O O O
-     *
-     *          Y Y Y
-     *          Y Y Y
-     *          Y Y Y
-     *
-     * Row and Column Numberings:
-     * rx -> row numbering
-     * cx -> column numbering
-     * bx -> both row and column numbering
-     */
-    void print() const;
-
-    /*
-     * Randomly shuffle the cube with 'times' moves and returns the moves performed.
-     */
-    vector<MOVE> randomShuffleCube(unsigned int times);
-
-    /*
-     * Perform moves on the Rubik Cube
-     */
-    RubiksCube &move(MOVE ind);
-
-    /*
-     * Invert a move
-     */
-    RubiksCube &invert(MOVE ind);
-
-    /*
-     * Rotational Moves on the Rubik Cubes
-     *
-     * F, F’, F2,
-     * U, U’, U2,
-     * L, L’, L2,
-     * D, D’, D2,
-     * R, R’, R2,
-     * B, B’, B2
-     */
-
-    virtual RubiksCube &f() = 0;
-
-    virtual RubiksCube &fPrime() = 0;
-
-    virtual RubiksCube &f2() = 0;
-
-    virtual RubiksCube &u() = 0;
-
-    virtual RubiksCube &uPrime() = 0;
-
-    virtual RubiksCube &u2() = 0;
-
-    virtual RubiksCube &l() = 0;
-
-    virtual RubiksCube &lPrime() = 0;
-
-    virtual RubiksCube &l2() = 0;
-
-    virtual RubiksCube &r() = 0;
-
-    virtual RubiksCube &d() = 0;
-
-    virtual RubiksCube &dPrime() = 0;
-
-    virtual RubiksCube &d2() = 0;
-
-    virtual RubiksCube &rPrime() = 0;
-
-    virtual RubiksCube &r2() = 0;
-
-    virtual RubiksCube &b() = 0;
-
-    virtual RubiksCube &bPrime() = 0;
-
-    virtual RubiksCube &b2() = 0;
-
-    string getCornerColorString(uint8_t ind) const;
-
-    uint8_t getCornerIndex(uint8_t ind) const;
-
-    uint8_t getCornerOrientation(uint8_t ind) const;
-};
+    // RubiksCube1DArray cube1;
+    // RubiksCube1DArray cube2;
+    //
+    // RubiksCubeBitboard cube1;
+    // RubiksCubeBitboard cube2;
 
 
-#endif //RUBIKS_CUBE_SOLVER_RUBIKSCUBE_H
+//  Equality and assignment of cubes --------------------------------------------------------------------------
+
+//     if(cube1 == cube2) cout << "Is equal\n";
+//     else cout << "Not Equal\n";
+// //
+//     cube1.randomShuffleCube(1);
+// //
+//     if(cube1 == cube2) cout << "Is equal\n";
+//     else cout << "Not Equal\n";
+// //
+//     cube2 = cube1;
+// //
+//     if(cube1 == cube2) cout << "Is equal\n";
+//     else cout << "Not Equal\n";
+
+
+//  Unordered_map of Cubes  ------------------------------------------------------------------------------------
+
+
+    // unordered_map<RubiksCube3DArray, bool, Hash3d> mp1;
+
+//    unordered_map<RubiksCube1DArray, bool, Hash1d> mp1;
+
+//    unordered_map<RubiksCubeBitboard, bool, HashBitboard> mp1;
+//
+    // mp1[cube1] = true;
+    // cube2.randomShuffleCube(8);
+    // if (mp1[cube1]) cout << "Cube1 is present\n";
+    // else cout << "Cube1 is not present\n";
+    //
+    // if (mp1[cube2]) cout << "Cube2 is present\n";
+    // else cout << "Cube2 is not present\n";
+
+
+// DFS Solver Testing __________________________________________________________________________________________
+    // RubiksCube3DArray cube;
+    // cube.print();
+//
+    // vector<GenericRubiksCubeModel::MOVE> shuffle_moves = cube.randomShuffleCube(3);
+    // for (auto move: shuffle_moves) cout << cube.getMove(move) << " ";
+    // cout << "\n";
+    // cube.print();
+//
+    // DFSsolver<RubiksCube3DArray, Hash3d> dfsSolver(cube, 5);
+    // vector<GenericRubiksCubeModel::MOVE> solve_moves = dfsSolver.solve();
+    // cout<<solve_moves.size()<<endl;
+    // for (auto move: solve_moves) cout << cube.getMove(move) << " ";
+    // cout << "\n";
+    // dfsSolver.RubiksCube.print();
+
+
+// //BFS Solver -----------------------------------------------------------------------------------------------------
+//     RubiksCubeBitboard cube;
+//     cube.print();
+// //
+//     vector<GenericRubiksCubeModel::MOVE> shuffle_moves = cube.randomShuffleCube(6);
+//     for(auto move: shuffle_moves) cout << cube.getMove(move) << " ";
+//     cout << "\n";
+//     cube.print();
+//
+//     BFSsolver<RubiksCubeBitboard, HashBitboard> bfsSolver(cube);
+//     vector<GenericRubiksCubeModel::MOVE> solve_moves = bfsSolver.solve();
+//
+//     for(auto move: solve_moves) cout << cube.getMove(move) << " ";
+//     cout << "\n";
+//     bfsSolver.RubiksCube.print();
+
+
+// IDDFS Solver ----------------------------------------------------------------------------------------------------
+    // RubiksCubeBitboard cube;
+    // cube.print();
+    //
+    // vector<GenericRubiksCubeModel::MOVE> shuffle_moves = cube.randomShuffleCube(7);
+    // for (auto move: shuffle_moves) cout << cube.getMove(move) << " ";
+    // cout << "\n";
+    // cube.print();
+    //
+    // IDDFSsolver<RubiksCubeBitboard, HashBitboard> iddfsSolver(cube, 7);
+    // vector<GenericRubiksCubeModel::MOVE> solve_moves = iddfsSolver.solve();
+    //
+    // for (auto move: solve_moves) cout << cube.getMove(move) << " ";
+    // cout << "\n";
+    // iddfsSolver.RubiksCube.print();
+
+// IDA* SOLVER ---------------------------------------------------------------------------------------------------
+    // RubiksCubeBitboard cube;
+    // cube.print();
+    //
+    // vector<GenericRubiksCubeModel::MOVE> shuffle_moves = cube.randomShuffleCube(5);
+    // for (auto move: shuffle_moves) cout << cube.getMove(move) << " ";
+    // cout << "\n";
+    // cube.print();
+    //
+    // IDAstarSolver<RubiksCubeBitboard, HashBitboard> idAstarSolver(cube);
+    // vector<GenericRubiksCubeModel::MOVE> solve_moves = idAstarSolver.solve();
+    // for (auto move: solve_moves) cout << cube.getMove(move) << " ";
+    // cout << "\n";
+    // idAstarSolver.RubiksCube.print();
+
+// CornerPatternDatabase Testing ---------------------------------------------------------------------------------
+    //
+    // CornerPatternDatabase cornerDB;
+    // RubiksCubeBitboard cube;
+    // cube.print();
+    //
+    // cout << (int)cornerDB.getNumMoves(cube) << "\n";
+    //
+    // cornerDB.setNumMoves(cube, 5);
+    //
+    // cout << (int)cornerDB.getNumMoves(cube) << "\n";
+    //
+    // cube.randomShuffleCube(1);
+    // cube.print();
+    // cout << (int)cornerDB.getNumMoves(cube) << "\n";
+    //
+    // cornerDB.setNumMoves(cube, 6);
+    //
+    // cout << (int)cornerDB.getNumMoves(cube) << "\n";
+
+
+// CornerDBMaker Testing --------------------------------------------------------------------------
+    string fileName = "C:\\Users\\sarsa\\CLionProjects\\RubiksCubeSolver\\Database\\cornerDepth.txt";
+
+//    Code to create Corner Database
+    CornerDBMaker dbMaker(fileName, 0x99);
+    dbMaker.bfsAndStore();
+    cout<<"HELLO2"<<endl;
+    RubiksCubeBitboard cube;
+    auto shuffleMoves = cube.randomShuffleCube(6);
+    cube.print();
+    for (auto move: shuffleMoves) cout << cube.getMove(move) << " ";
+    cout << "\n";
+
+    IDAstarSolver<RubiksCubeBitboard, HashBitboard> idaStarSolver(cube, fileName);
+    auto moves = idaStarSolver.solve();
+
+    idaStarSolver.RubiksCube.print();
+    for (auto move: moves) cout << cube.getMove(move) << " ";
+    cout << "\n";
+
+
+    return 0;
+}

@@ -15,12 +15,12 @@ class DFSsolver {
     int max_search_depth;
 
     bool dfs(int depth) {
-        if (RubiksCube.is_solved())return true;
+        if (RubiksCube.isSolved()){ return true;}
         if (depth > max_search_depth)return false;
         for (int i=0;i<18;i++) {
             RubiksCube.move(GenericRubiksCubeModel::MOVE(i));
             moves.push_back(GenericRubiksCubeModel::MOVE(i));
-            dfs(depth+1);
+            if (dfs(depth+1)) return true;
             moves.pop_back();
             RubiksCube.invert(GenericRubiksCubeModel::MOVE(i));
         }
@@ -34,7 +34,7 @@ class DFSsolver {
         max_search_depth = msd;
     }
     vector<GenericRubiksCubeModel::MOVE> solve() {
-        dfs(1);
+        bool flag = dfs(1);
         return moves;
     }
 };
