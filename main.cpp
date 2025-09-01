@@ -293,7 +293,7 @@ int main() {
 
     CornerDBMaker dbMaker(fileName, 0x99);
     dbMaker.bfsAndStore();
-    cout<<"HELLO"<<endl;
+    // cout<<"HELLO"<<endl;
 
     CubeScanner scanner(0);
     RubiksCubeBitboard cube;
