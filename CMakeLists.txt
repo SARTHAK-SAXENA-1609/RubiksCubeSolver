@@ -1,7 +1,13 @@
 cmake_minimum_required(VERSION 3.31)
 project(RubiksCubeSolver)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 14)
+
+find_package(OpenCV CONFIG REQUIRED)
+include_directories(${OpenCV_INCLUDE_DIRS})
+
+include_directories(Models)
+include_directories(${CMAKE_SOURCE_DIR})
 
 add_executable(RubiksCubeSolver main.cpp
         Models/GenericRubiksCubeModel.cpp
@@ -24,4 +30,8 @@ add_executable(RubiksCubeSolver main.cpp
         PatternDatabases/CornerDBMaker.cpp
         PatternDatabases/CornerDBMaker.h
         Solver/IDAstarSolver.h
+        Scanner/CubeScanner.cpp
+        Scanner/CubeScanner.h
 )
+
+target_link_libraries(RubiksCubeSolver PRIVATE opencv_core opencv_imgproc opencv_highgui)

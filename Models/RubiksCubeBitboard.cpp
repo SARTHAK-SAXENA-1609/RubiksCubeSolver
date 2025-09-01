@@ -95,6 +95,16 @@ public:
         return (COLOR)(dist_of_one_from_left - 1);
     }
 
+    void setColor(FACE face, int row, int col, COLOR color) override {
+        int idx = arr[row][col];
+        if (idx == 8) return;
+
+        bitboard[(int)face] &= ~(one_8 << (8 * idx));
+
+        uint64_t newColor = (1ULL << (int)color);
+        bitboard[(int)face] |= (newColor << (8 * idx));
+    }
+
     bool isSolved() const override {
         for (int i=0;i<6;i++) {
             if (solved_side_config[i] != bitboard[i]) {

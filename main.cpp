@@ -12,6 +12,7 @@
 #include "Solver/IDAstarSolver.h"
 // #include "PatternDatabases/CornerPatternDatabase.h"
 #include "PatternDatabases/CornerDBMaker.h"
+#include "Scanner/CubeScanner.h"
 
 using namespace std;
 
@@ -267,25 +268,45 @@ int main() {
 
 
 // CornerDBMaker Testing --------------------------------------------------------------------------
-    string fileName = "C:\\Users\\sarsa\\CLionProjects\\RubiksCubeSolver\\Database\\cornerDepth.txt";
+    // string fileName = "C:\\Users\\sarsa\\CLionProjects\\RubiksCubeSolver\\Database\\cornerDepth.txt";
 
 //    Code to create Corner Database
+    // CornerDBMaker dbMaker(fileName, 0x99);
+    // dbMaker.bfsAndStore();
+    // cout<<"HELLO2"<<endl;
+    // RubiksCubeBitboard cube;
+    // auto shuffleMoves = cube.randomShuffleCube(6);
+    // cube.print();
+    // for (auto move: shuffleMoves) cout << cube.getMove(move) << " ";
+    // cout << "\n";
+    //
+    // IDAstarSolver<RubiksCubeBitboard, HashBitboard> idaStarSolver(cube, fileName);
+    // auto moves = idaStarSolver.solve();
+    //
+    // idaStarSolver.RubiksCube.print();
+    // for (auto move: moves) cout << cube.getMove(move) << " ";
+    // cout << "\n";
+
+    // CubeScanner Testing ----------------------------------------------------------------------------------
+
+    string fileName = "C:\\Users\\sarsa\\OneDrive\\Desktop\\rubiks-cube-solver-main\\Databases\\cornerDepth5V1.txt";
+
     CornerDBMaker dbMaker(fileName, 0x99);
     dbMaker.bfsAndStore();
-    cout<<"HELLO2"<<endl;
+    cout<<"HELLO"<<endl;
+
+    CubeScanner scanner(0);
     RubiksCubeBitboard cube;
-    auto shuffleMoves = cube.randomShuffleCube(6);
+    scanner.scan(cube);
     cube.print();
-    for (auto move: shuffleMoves) cout << cube.getMove(move) << " ";
+
+    IDAstarSolver<RubiksCubeBitboard, HashBitboard> idAstarSolver(cube, fileName);
+    auto solve_moves= idAstarSolver.solve();
+    cout<<solve_moves.size()<<endl;
+    // idAstarSolver.RubiksCube.print();
+    for (auto move: solve_moves) cout << cube.getMove(move) << " ";
     cout << "\n";
-
-    IDAstarSolver<RubiksCubeBitboard, HashBitboard> idaStarSolver(cube, fileName);
-    auto moves = idaStarSolver.solve();
-
-    idaStarSolver.RubiksCube.print();
-    for (auto move: moves) cout << cube.getMove(move) << " ";
-    cout << "\n";
-
+    idAstarSolver.RubiksCube.print();
 
     return 0;
 }
